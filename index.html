@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+   <style>
+       .homeHeader, .homeFooter{
+    background:linear-gradient(to right,blue,rgb(153, 143, 143),rgb(204, 189, 189))
+}
+
+.homeHeader{
+    height:15vh;
+    text-shadow:2px 1px black;
+}
+
+.homeh1one{
+    letter-spacing:3px;
+    left:5%;
+    top:-5px;
+}
+
+.homeh3two{
+    top:25px;
+    left:-15%;
+}
+
+.homeContainer{
+    height:75vh;
+    width:100%;
+    background:linear-gradient(to right,lightgray,rgb(158, 146, 146));
+}
+
+.startBtn{
+    border-radius:50%;
+    background:green;
+    height:50px;
+    width:50px;
+    cursor:pointer;
+    transition:1s ease;
+    outline:none;
+    text-transform:uppercase;
+    transition:1s ease;
+}
+
+.startBtn:hover{
+    box-shadow:2px 2px black;
+    text-decoration:underline
+
+}
+
+.captionRow{
+    height:20px;
+    border:1px solid black;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content: space-evenly;
+  
+}
+
+/* .captionP{
+    position:absolute;
+    top:0;
+    left:0;
+} */
+
+.infoRow{
+    height:20%;
+    width:100%;
+    /* border:1px solid black; */
+    display:flex;
+    align-items:center;
+    justify-content: space-evenly;
+}
+
+.typosDOM{
+    color:red;
+}
+
+.wordarea{
+    height:50%;
+    width:100%;
+    /* border:1px solid black; */
+    /* display:flex;
+    align-items:center;
+    justify-content: center;
+    flex-direction:column; */
+}
+
+.celebrationArea, .wordDisplay, .usersOutput, .progressBar{
+    position:absolute;
+    top:0;
+    left:0;
+}
+
+.progressBar{
+    width:200px;
+    height:20px;
+    border:1px solid black;
+    left:55%;
+}
+
+.progress{
+    width:0%;
+    background:green;
+    height:100%;
+    transition:1s ease;
+}
+
+.wordDisplay{
+    height:50%;
+    width:65%;
+    left:30%;
+    top:18%;
+    /* border:2px solid black; */
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.wordDiv{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.h1Word{
+    transition:1s ease;
+}
+
+.usersOutput{
+    top:75%;
+    left:60%;
+}
+
+.h1Word{
+    letter-spacing:5px;
+    font-size:35px;
+}
+
+.keyboardCard{
+    height:30%;
+    width:100%;
+    /* border:1px solid black; */
+    display:flex;
+    align-items:center;
+    justify-content: center;
+}
+
+.keyboard{
+    width:70%;
+    height:85%;
+    /* border:1px solid red; */
+    display:grid;
+    grid-template-columns:repeat(9,1fr);
+    top:-25px;
+    border-radius:5%;
+    background:linear-gradient(to right,white,lightgray);
+   
+}
+
+.keyDiv{
+    cursor:pointer;
+}
+
+.h1Key{
+    border:1px solid black;
+    border-radius:10%;
+    text-align:center;
+
+}
+
+.celebrationArea{
+    width:25%;
+    height:75%;
+    top:12%;
+    /* border:1px solid black; */
+    left:25px;
+    border-radius:50%;
+}
+
+.gif{
+    height:100%;
+    width:100%;
+    border-radius:50%;
+}
+   </style>
+    <title>Typing Game</title>
+</head>
+
+
+
+<header class='homeHeader'>
+<h1 class='homeh1one'>Welcome To The <i class='fas fa-keyboard'></i></h1>
+<h3 class="homeh3two">TYPING GAME</h3>
+</header>
+
+<div class="homeContainer">
+    <!-- <div class="captionRow"></div> -->
+    <div class="infoRow">
+        <button class="startBtn">Start</button>
+        <h4>Score:<span class='scoreDOM'></span></h4>
+        <h4>WC:<span class='wordcountDOM'></span></h4>
+        <h4>Timer:<span class='timerDOM'></span></h4>
+        <h4>Typos:<span class='typosDOM'></span></h4>
+    </div>
+    
+    <div class="wordarea">
+        <div class="celebrationArea"></div>
+        <div class="progressBar">
+            <div class="progress">
+                <div class="progressAmt"></div>
+            </div>
+        </div>
+        <div class="wordDisplay"></div>
+        <h1 class="usersOutput"></h1>
+    </div>
+    <div class="keyboardCard">
+        <div class="keyboard"></div>
+    </div>
+</div>
+
+
+
+<footer class="homeFooter">
+    <p>Footer&copy;</p>
+</footer>
+
+
+
+
+<script>
+const APIKEY = "6gRm9WZ0hk8YcvjvVS4tX2HAAnV5WmgE"
+var scoreDOM = document.querySelector(".scoreDOM");
+var timerDOM = document.querySelector(".timerDOM");
+var typosDOM = document.querySelector(".typosDOM");
+var wcDOM = document.querySelector(".wordcountDOM");
+var celebrationDOM = document.querySelector(".celebrationArea")
+var wordDisplayDOM = document.querySelector(".wordDisplay");
+var keys = ['Q','W','E','R','T','Y','U','I','O','P','A','S','F','G','H','J','K','L','Z','X','C','V','B','N','M','Delete']
+var keyboard = document.querySelector(".keyboard");
+var usersOutput = document.querySelector(".usersOutput");
+var startBtn = document.querySelector(".startBtn");
+var captionRow = document.querySelector(".captionRow");
+
+var progressAmt = document.querySelector(".progressAmt")
+
+progressAmt.innerHTML = '0%'
+
+var progressDOM = document.querySelector(".progress")
+var progress = 0;
+
+progressDOM.style.width=`${progress}%`
+
+
+var score = 0;
+var timer = 0;
+var wc = 0;
+var timer = 25;
+var hasStarted = false;
+var h1Letters=[];
+var typos = 0;
+var points = 100;
+var correctLetters=0;
+var wordProgress = 0;
+
+var correctWords = [];
+
+
+scoreDOM.innerHTML = score;
+timerDOM.innerHTML = timer;
+typosDOM.innerHTML = typos;
+wcDOM.innerHTML = wc;
+var words = [];
+var counter = 0;
+
+startBtn.onclick=startGame;
+
+
+function startGame(){
+    hasStarted = true;
+fetch('https://random-word-api.herokuapp.com/word?number=25')
+.then(res=>res.json())
+.then(res=>{
+    // console.log(res)
+    words = res
+
+    printWord(words[counter])
+    countTimer()
+
+})
+}
+
+
+function clearPercent(){
+    setTimeout(()=>{
+        progress=0;
+        progressDOM.style.width=`${progress}%`;
+        progressAmt.innerHTML = `0%`
+
+    },1000)
+}
+
+
+function printWord(word){
+    progress = 0;
+    clearPercent()
+
+    
+    wordDisplayDOM.innerHTML = ""
+
+
+    let divWord = document.createElement("div");
+    divWord.className='wordDiv'
+    word.split("").forEach((letter,idx)=>{
+    let h1Word = document.createElement("h1");
+        h1Word.className = 'h1Word';
+        h1Word.innerText = letter;
+        h1Letters.push(h1Word)
+        divWord.appendChild(h1Word)
+    })
+
+        wordDisplayDOM.appendChild(divWord)
+}
+
+
+
+keys.forEach(k=>{
+
+    var keyDiv = document.createElement("div");
+    var h1Key = document.createElement("h1");
+    h1Key.className='h1Key'
+    h1Key.innerText = k
+    keyDiv.className="keyDiv";
+    keyDiv.appendChild(h1Key)
+    keyboard.appendChild(keyDiv)
+})
+
+
+onkeydown=(e)=>typeKey(e);
+onkeyup=clearKeys;
+var word = ""
+
+
+
+function clearKeys(){
+    let h1Keys = document.querySelectorAll('.h1Key')
+    h1Keys.forEach(k=>{
+            k.style.backgroundColor=''
+    })
+}
+
+
+
+
+function typeKey(e){
+    if(!hasStarted){
+        console.log("you haven't started");
+        usersOutput.innerHTML = "Need to hit the start button!!"
+        setTimeout(()=>{
+            usersOutput.innerHTML = ""
+        },1250)
+        return;
+    }
+
+    if(word.length === 0 && e.key === "Backspace"){
+        console.log('what are you doing??');
+        return;
+    }
+    if(word.length >= words[counter].length && e.key !== "Backspace"){
+        console.log("word is reached goal length");
+        return;
+    }
+
+
+    console.log(e.key)
+    let h1Keys = document.querySelectorAll('.h1Key')
+    h1Keys.forEach(k=>{
+        if(k.textContent === e.key.toUpperCase()){
+            k.style.backgroundColor='gray'
+        }
+     })
+
+    if(e.key === "Backspace"){
+        h1Keys[h1Keys.length-1].style.backgroundColor='gray'
+        word = word.split("");
+        word.pop();
+        word = word.join("")
+        h1Letters[word.length].style.color='black'
+        typos++
+        typosDOM.innerHTML = typos;
+        points-=10;
+        timer-=2
+
+
+    }
+  
+    else{
+    word += e.key;
+    checkWithWord(word,words[counter])
+    }
+     usersOutput.innerHTML = word;
+}
+
+
+
+
+
+function checkWithWord(str,target){
+    correctLetters=0;
+    
+    str.split("").forEach((letter,idx)=>{
+        if(letter === target[idx]){
+                h1Letters[idx].style.color='red'
+                correctLetters++
+                progress = correctLetters/ (target.length) * 100
+                progressAmt.innerHTML = `${progress.toFixed(0)}%`
+        console.log("correctLetters: " + correctLetters,  " target: " + target.length, "Progress: " + progress)
+
+
+                // console.log("Progress: " + progress)
+                progressDOM.style.width=`${progress}%`
+              
+        }
+        else{
+            h1Letters[idx].style.color='black'
+        }
+        
+     
+    })
+
+    if(str === target){
+      correctWords.push(target)
+      fetchGiphy()
+      updateGame()
+
+    //   runCaption(correctWords)
+      
+    }
+}
+
+
+function updateGame(){
+    counter++
+    timer+=3
+    score+=points;
+    points = 100;
+    // correctLetters=0;
+    wc++;
+    wcDOM.innerHTML = wc;
+    h1Letters = [];
+    scoreDOM.innerHTML = score;
+    console.log("Word: " + word)
+    word = "";
+    console.log("Word: " + word)
+    usersOutput.innerHTML = 'now what the fuck??'
+    printWord(words[counter]);
+ 
+
+}
+
+
+
+
+
+
+function countTimer(){
+    timer--;
+    timerDOM.innerHTML = timer;
+    if(timer > 0){
+    setTimeout(countTimer,1000)
+    }
+    else{
+        console.log("Timer done!");
+        console.log("Score: " + score)
+        console.log("WordCount: " + wc)
+        console.log("Typos: " + typos)
+        alert(`Timer done!\n
+        Score:${score}\n 
+        WordCount:${wc}\n
+        Typos:${typos}`);
+        alert(correctWords)
+    }
+}
+
+
+// countTimer()
+
+let giphys = [];
+
+function fetchGiphy(){
+    if(giphys.length){
+        console.log("no call to the poor api")
+        let gif = giphys[Math.random() * giphys.length | 0].images.fixed_height.url;
+        console.log(gif)
+        celebrationDOM.innerHTML = `<img src=${gif} alt="img" class="gif">`
+
+        setTimeout(()=>{
+            celebrationDOM.innerHTML = ""
+        },1500)
+        return
+
+    }
+
+    console.log('apikey: ' + APIKEY)
+    fetch(`https://api.giphy.com/v1/gifs/search?q=celebrate&api_key=${APIKEY}`)
+    .then(res=>res.json())
+    .then(res=>{
+        console.log(res)
+        giphys = res.data
+        let gif = res.data[Math.random() * res.data.length | 0].images.fixed_height.url;
+        console.log(gif)
+        celebrationDOM.innerHTML = `<img src=${gif} alt="img" class="gif">`
+
+        setTimeout(()=>{
+            celebrationDOM.innerHTML = ""
+        },1500)
+    })
+}
+
+
+function runCaption(words){
+    captionRow.innerHTML = ""
+    words.forEach(word=>{
+        let p = document.createElement("p");
+        p.innerText = word;
+        p.className='captionP'
+
+        captionRow.appendChild(p)
+    })
+
+    //  slideCaption()
+}
+
+
+function slideCaption(){
+    let pCaptions = document.querySelectorAll(".captionP");
+    console.log("slideCaption fired")
+    pCaptions.forEach(p=>{
+        let pLeft = parseInt(window.getComputedStyle(p).getPropertyValue('left'));
+        if(pLeft < 500){
+            pLeft+=10;
+            p.style.left=`${pLeft}px`
+            console.log(pLeft)
+            setTimeout(slideCaption,10)
+        }
+        else{
+            pLeft=0;
+            p.style.left=`${pLeft}px`
+
+            setTimeout(slideCaption,10)
+        }
+    })
+}
+
+
+
+</script>
+<script src="js/home.js"></script>
